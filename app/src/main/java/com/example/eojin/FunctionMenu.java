@@ -8,17 +8,14 @@ import javax.swing.JMenuItem;
 
 public class FunctionMenu extends JMenu
 {	
-	static JMenuItem i_eraser, i_save;
+	static JMenuItem i_eraser;
 	
 	public FunctionMenu(String name)
 	{
 		super(name);
 		i_eraser = new JMenuItem("Eraser");
 		add(i_eraser);
-		i_eraser.addActionListener(new DrawItem.DrawActionListener());
-		i_save = new JMenuItem("Save");
-		add(i_save);
-		
+		i_eraser.addActionListener(new EraseActionListener());
 	}
 	
 	static class EraseActionListener implements ActionListener

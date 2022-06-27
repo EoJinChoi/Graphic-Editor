@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Label;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -15,10 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.*;
 import javax.swing.*;
 
-public class MainFrame extends JFrame 
+public class MainFrame extends JFrame  
 {
 	JMenuBar menuBar;
 	DrawMenu drawMenu;
@@ -28,7 +30,9 @@ public class MainFrame extends JFrame
 	static int count = 3;
 	static JButton undo, redo;
 	static JPanel p;
- 
+	static JButton color;
+	static JButton save;
+	
 	private void createFrame()
 	{
 		super.setLayout(new BorderLayout());
@@ -49,31 +53,22 @@ public class MainFrame extends JFrame
 		pn.add(undo);
 		pn.add(redo);
 		
-		// 색상선택 버튼
-		ButtonGroup group = new ButtonGroup();
-		black = new JRadioButton("BLACK");
-		red = new JRadioButton("RED");
-		blue = new JRadioButton("BLUE");
-		green = new JRadioButton("GREEN");
-		group.add(black);
-		group.add(red);
-		group.add(blue);
-		group.add(green);
-		black.addActionListener(new ColorItem.ColorActionListener());
-		red.addActionListener(new ColorItem.ColorActionListener());
-		blue.addActionListener(new ColorItem.ColorActionListener());
-		green.addActionListener(new ColorItem.ColorActionListener());
-		pn.add(black);
-		pn.add(red);
-		pn.add(blue);
-		pn.add(green);
+		//color 버튼
+		color = new JButton("COLOR");
+		color.addActionListener(new ColorItem.ColorActionListener());
+		pn.add(color);
+		
+		// 저장
+		save = new JButton("All Clear");
+		save.addActionListener(new DrawItem.BtnActionListener());
+		pn.add(save);
 		
 		// 선 굵기
 		JButton btn1 = new JButton("+");
 		JButton btn2 = new JButton("-");
 		JLabel txt1=new JLabel("3");
 		
-		txt1.setHorizontalAlignment(JLabel.CENTER); //텍스트 센터 표시 설정
+		txt1.setHorizontalAlignment(JLabel.CENTER); 
 		pn.add(btn2);
 		pn.add(txt1);
 		pn.add(btn1);
