@@ -1,125 +1,130 @@
 package com.example.eojin;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.Panel;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import javax.swing.*;
 
 public class MainFrame extends JFrame 
 {
-	JMenuBar mb;
-	DrawBar drawBar;
-	JMenuItem drawItem;
-//	 JMenuItem i_pen, i_line, i_rectengle, i_circle, i_size, i_color, i_eraser, i_save;
-//	 Button b = new Button();
-	 
+	JMenuBar menuBar;
+	DrawMenu drawMenu;
+	FunctionMenu functionMenu;
 	
-	public MainFrame()
+	static JRadioButton black, red, blue, green;
+	static int count = 3;
+	static JButton undo, redo;
+	static JPanel p;
+ 
+	private void createFrame()
 	{
-		super.setTitle("Graphic Editor");
+		super.setLayout(new BorderLayout());
+		p = new DrawItem();
+		p.setBackground(Color.WHITE);
+		add(p);
+		JPanel pn = new JPanel();
+		pn.setLayout(new FlowLayout());
+		pn.setBounds(0, 0, 1000, 50);
+		pn.setBackground(Color.LIGHT_GRAY);
+		add(pn, BorderLayout.NORTH);
 		
-	}
+		// undo/redo 버튼
+		undo = new JButton("←");
+		undo.addActionListener(new DrawItem.BtnActionListener());
+		redo = new JButton("→");
+		redo.addActionListener(new DrawItem.BtnActionListener());
+		pn.add(undo);
+		pn.add(redo);
+		
+		// 색상선택 버튼
+		ButtonGroup group = new ButtonGroup();
+		black = new JRadioButton("BLACK");
+		red = new JRadioButton("RED");
+		blue = new JRadioButton("BLUE");
+		green = new JRadioButton("GREEN");
+		group.add(black);
+		group.add(red);
+		group.add(blue);
+		group.add(green);
+		black.addActionListener(new ColorItem.ColorActionListener());
+		red.addActionListener(new ColorItem.ColorActionListener());
+		blue.addActionListener(new ColorItem.ColorActionListener());
+		green.addActionListener(new ColorItem.ColorActionListener());
+		pn.add(black);
+		pn.add(red);
+		pn.add(blue);
+		pn.add(green);
+		
+		// 선 굵기
+		JButton btn1 = new JButton("+");
+		JButton btn2 = new JButton("-");
+		JLabel txt1=new JLabel("3");
+		
+		txt1.setHorizontalAlignment(JLabel.CENTER); //텍스트 센터 표시 설정
+		pn.add(btn2);
+		pn.add(txt1);
+		pn.add(btn1);
+		
+		ActionListener btn1_action = new ActionListener(){			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+				count += 1;
+				txt1.setText(String.valueOf(count));				
+			}
+		};
+		btn1.addActionListener(btn1_action);
+		
+		ActionListener btn2_action = new ActionListener(){			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub	
+				if(count <= 1)
+					txt1.setText("1");
+				else
+				{
+					count -= 1;
+					txt1.setText(String.valueOf(count));
+				}				
+			}
+		};
+		btn2.addActionListener(btn2_action);
+ 
+		// MenuBar
+		menuBar = new JMenuBar();
+		drawMenu = new DrawMenu("Draw");
+		functionMenu = new FunctionMenu("Function");
+		setJMenuBar(menuBar);
+
+		menuBar.add(drawMenu);
+		menuBar.add(functionMenu);
 	
-//	public  void setDrawBar()
-//	{
-//		f.setJMenuBar(mb);
-//
-//		JMenu m_draw = new JMenu("Draw");
-//		mb.add(m_draw);
-//		
-//		i_pen = new JMenuItem("Pen");
-//		m_draw.add(i_pen);
-//		i_line = new JMenuItem("Line");
-//		m_draw.add(i_line);
-//		i_rectengle = new JMenuItem("Rectengle");
-//		m_draw.add(i_rectengle);
-//		i_circle = new JMenuItem("Circle");
-//		m_draw.add(i_circle);
-//
-//		mb.add(m_draw);
-//		setJMenuBar(mb);
-//		  
-//	}
-//	
-//	public void setPropertyBar()
-//	{
-//		JMenu m_property = new JMenu("Property");
-//		mb.add(m_property);
-//		
-//		i_size = new JMenuItem("Size");
-//		i_size.addActionListener(new MyActionListener());
-//		m_property.add(i_size);
-//		
-//		i_color = new JMenuItem("Color");
-//		m_property.add(i_color);
-//
-//		mb.add(m_property);
-//		setJMenuBar(mb);
-//	}
-//	
-//	public void setFunctionBar()
-//	{
-//		JMenu m_function = new JMenu("Function");
-//		mb.add(m_function);
-//		
-//		i_eraser = new JMenuItem("Eraser");
-//		m_function.add(i_eraser);
-//		JMenuItem i_save = new JMenuItem("Save");
-//		m_function.add(i_save);
-//
-//		mb.add(m_function);
-//		setJMenuBar(mb);
-//	}
-//	
-//	
-//	class MyActionListener implements ActionListener{
-//
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            JMenuItem item = (JMenuItem)e.getSource();
-//
-//            if(item == i_size)
-//            {
-//                System.out.println("hello");
-//            }
-//            
-//        }
-//        
-//    }
-	private void createFrame() {
-		mb = new JMenuBar();
-		drawBar = new DrawBar("Draw tool");
-//		drawItem = new JMenuItem("Pen");
-		setJMenuBar(mb);
-//		db.setDrawBar();
-//		mb.add(db);
-		
-//		pb.setPropertyBar();
-//		fb.setFunctionBar();
-//		mb.set
-		
-//		drawBar.add(drawItem);
-		mb.add(drawBar);
-//		mb.setBounds(0, 0, 800, 30);
-		
-//		add(mb);
-		
-		setSize(800, 600);
+		setSize(1200, 800);
 		
 		setVisible(true);
-		setLayout(null);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	public static void main(String[] args) {
+	
+	public static void main(String[] args)
+	{
 		// TODO Auto-generated method stub
-		MainFrame m = new MainFrame();
-		m.createFrame();
+		MainFrame mainFrame = new MainFrame();
+		mainFrame.createFrame();
 	}
 
 }
